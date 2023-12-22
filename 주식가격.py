@@ -1,19 +1,14 @@
 def solution(prices):
-    answer = []
-
-    while prices:
-        prices.reverse()
-        now_prices = prices.pop()
-        prices.reverse()
-        turn = 0
-        for price in prices:
-            if now_prices > price:
-                turn += 1
-                break
-            turn += 1
-
-        answer.append(turn)
-
+    stack = []
+    answer = [0] * len(prices)
+    for i in range(len(prices)):
+        if stack != []:
+            while stack != [] and stack[-1][1] > prices[i]:
+                past, _ = stack.pop()
+                answer[past] = i - past
+        stack.append([i, prices[i]])
+    for i, s in stack:
+        answer[i] = len(prices) - 1 - i
     return answer
 
 
