@@ -12,8 +12,6 @@ def solution(jobs):
     heapq.heappush(delayed, (duration, start))
 
     while jobs or delayed:
-        # now 위치보다 작은 모든 시작시간의 작업을 대기열에 넣기
-        # 생각해야 할 조건 - heap에 뭐가 있으면, 다 비우고 pop
         duration, start = heapq.heappop(delayed)
 
         # 작업 시간 조정
