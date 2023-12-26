@@ -1,21 +1,15 @@
 def solution(number, k):
     answer = ""
-    sorting_num = sorted(set(number))
-    target_num = sorting_num[:k]
-
     cnt = 0
-    for letter_idx in range(len(number)):
-        if cnt >= k:
-            answer += number[letter_idx:]
-            break
 
-        if number[letter_idx] in target_num:
-            cnt += 1
-            continue
+    while cnt < k:
+        lost_num = min(list(number[:k]))
+        number = number.replace(lost_num, "", 1)
+        # print(number)
+        cnt += 1
 
-        answer += number[letter_idx]
-    return answer
+    return number
 
 
-# print(solution("1924", 2))
-print(solution("1231234", 3))
+print(solution("1234567890123456789012345678901234567890", 1))
+print(solution("4177252841", 9))
