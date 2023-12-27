@@ -43,3 +43,28 @@ def solution(numbers):
 
 
 print(solution("17"))
+
+from itertools import permutations
+
+
+def other_solution(numbers):
+    permute_set = set()
+
+    for i in range(1, len(numbers) + 1):
+        permute_set = permute_set.union(
+            {int("".join(item)) for item in permutations(numbers, i)}
+        )
+
+    permute_set = permute_set.difference(set(range(0, 2)))
+    permute_list = list(permute_set)
+
+    for target in permute_list:
+        for num in range(2, target // 2 + 1):
+            if target % num == 0:
+                permute_list.remove(target)
+                break
+
+    return len(permute_list)
+
+
+print(other_solution("011"))
