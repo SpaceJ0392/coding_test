@@ -4,19 +4,14 @@ def solution(people, limit):
     people = sorted(people, reverse=True)
 
     while people:
-
-        p_weight = people[-1]
-        while p_weight + boat <= limit and len(people) > 1:
-            boat += people.pop()
-            p_weight = people[-1]
+        while people and people[-1] + boat <= limit:
+            boat += people[-1]
+            people.pop()
 
         answer += 1
         boat = 0
 
-        if len(people) == 1:
-            break
-
-    return answer + 1
+    return answer
 
 
 print(solution([70, 80, 50, 50], 100))
