@@ -1,29 +1,25 @@
-parent = list(range(0, 101))
-
-
-def find(x):
-    if parent[x] != x:
-        find(parent[x])
-    return parent[x]
-
-
-def union(a, b):
-    a = find(a)
-    b = find(b)
-    if a < b: parent[b] = a
-    else: parent[a] = b
-
-
 def solution(n, costs):
     answer = 0
-    costs.sort(key=lambda x: x[2])
-    print(costs)
-    for island1, island2, cost in costs:
-        parent1 = find(island1)
-        parent2 = find(island2)
 
-        if parent1 != parent2:
-            union(island1, island2)
+    parent = list(range(0, n))
+    costs.sort(key=lambda x: x[2])
+
+    def union(x, y):
+        a = find(x)
+        b = find(y)
+        if a != b:
+            parent[a] = b
+
+    def find(x):
+        if parent[x] != x:
+            parent[x] = find(parent[x])
+
+        return parent[x]
+
+    for i1, i2, cost in costs:
+        if find(i1) != find(i2):
+            union(i1, i2)
+            print(parent)
             answer += cost
 
     return answer
