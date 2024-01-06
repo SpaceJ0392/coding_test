@@ -20,3 +20,6 @@ def solution(name):
     # 알파벳 변경(상하이동) 횟수에 좌우이동 횟수 추가
     answer += min_move
     return answer
+
+
+print(solution("JEROEN"))
