@@ -7,7 +7,7 @@ def solution(n, wires):
             start_set.update(connect_set) for connect_set in sub_set if set(connect_set) & start_set
             # start 지점하고, 연결된 모든 경로를 담는다.
         ]  # 집합 연산자 & : 교집합 연산 - 기존의 set에서 비교하여 없는 원소만 추가하는 형식이다.
-        ans = min(ans, abs(2 * len(start_set) - n)) # len(start_set) - (n + len(start_set)) == 2 * len(start_set) - n
+        ans = min(ans, abs(2 * len(start_set) - n)) # len(start_set) - (n - len(start_set)) == 2 * len(start_set) - n
     return ans
 
 
