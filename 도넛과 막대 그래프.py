@@ -21,27 +21,42 @@ def solution(edges):
     ]
     res[0] = created_node[0]
 
-    for node in out_graph[created_node[0]]:
-        node_path = []
-        while True:
-            # 1자 패턴
-            if out_graph.get(node) is None:
-                res[2] += 1
-                break
+    # 1자 패턴 정점 : 나가는 점 X
+    one_line_node = [node for node in in_graph.keys() if out_graph.get(node) is None]
+    res[2] = len(one_line_node)
 
-            # 8자 패턴
-            if len(out_graph[node]) == 2:
-                res[3] += 1
-                break
+    # 8자 패전 정점 : 2번 나가는 점
+    eight_node = [
+        node
+        for node in out_graph.keys()
+        if len(out_graph[node]) == 2 and node != created_node[0]
+    ]
+    res[3] = len(eight_node)
 
-            # 회전 패턴
-            if node in node_path:
-                res[1] += 1
-                break
+    # 순환은 전체 그래프 수 중 1자와 8자를 제외한 나머지
+    res[1] = len(out_graph[created_node[0]]) - (res[2] + res[3])
 
-            # 패턴 해당 됨이 확인 될 때까지 이동
-            node_path.append(node)
-            node = out_graph[node][0]
+    # for node in out_graph[created_node[0]]:
+    #     node_path = []
+    #     while True:
+    #         # 1자 패턴 : 나가는 점 X
+    #         if out_graph.get(node) is None:
+    #             res[2] += 1
+    #             break
+    #
+    #         # 8자 패턴
+    #         if len(out_graph[node]) >= 2:
+    #             res[3] += 1
+    #             break
+    #
+    #         # 순환 패턴
+    #         if node in node_path:
+    #             res[1] += 1
+    #             break
+    #
+    #         # 패턴 해당 됨이 확인 될 때까지 이동
+    #         node_path.append(node)
+    #         node = out_graph[node][0]
 
     return res
 
@@ -64,11 +79,6 @@ print(
             [5, 3],
             [11, 9],
             [3, 8],
-            [4, 13],
-            [13, 14],
-            [14, 15],
-            [15, 16],
-            [16, 13],
         ]
     )
 )
