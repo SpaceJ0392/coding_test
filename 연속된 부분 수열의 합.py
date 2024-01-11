@@ -1,23 +1,23 @@
-def solution(sequence, k):
+def solution(seq, k):
     answer = []
-    sub_sequence = []
+    start, end, total = 0, 0, seq[0]
+    seq += [0]
+    min_length = len(seq)
 
-    start, end = 0, 0
-    while len(sequence) > end >= start:
-        target = sequence[start : end + 1]
-        target_sum = sum(sequence[start : end + 1])
-        if sum(sequence[start : end + 1]) == k:
-            sub_sequence.append([start, end])
+    while end < len(seq) - 1:
+        if total <= k:
+            if total == k and end - start + 1 < min_length:
+                answer = [start, end]
+                min_length = end - start + 1
+            end += 1
+            total += seq[end]
+        else:
+            start += 1
+            total -= seq[start - 1]
 
-        if sum(sequence[start : end + 1]) > k:
-            end -= 1
-            start = end
-            continue
-
-        end += 1
-
-    print(sub_sequence)
     return answer
 
 
 print(solution([1, 2, 3, 4, 5], 7))
+print(solution([2, 2, 2, 2, 2], 6))
+print(solution([1, 1, 1, 2, 3, 4, 5], 5))
