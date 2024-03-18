@@ -19,9 +19,11 @@ def find_parent(child):
 def union(child1, child2):
     p1 = find_parent(child1)
     p2 = find_parent(child2)
-    if p1 != p2:
+    if p1 > p2:
         parents[p1 - 1] = p2
-
+    else:
+        parents[p2 - 1] = p1
+        
 for i in range(n):
     _, tf_score, ti_score = target[i] # 현재 비교 대상
     for idx, f_score, i_score in target:
@@ -29,9 +31,6 @@ for i in range(n):
         if (tf_score > f_score and ti_score < i_score) or (tf_score < f_score and ti_score > i_score):
             union(i, idx)
 
-# 순서 정리
-rank, temp = [], list(set(parents))
-for i in parents:
-    rank.append(str(temp.index(i) + 1))
 
-print(' '.join(rank))
+for i in parents:
+    print(i, end=' ')
