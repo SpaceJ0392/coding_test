@@ -37,9 +37,9 @@ def union(child1, child2):
 tot_cost = 0
 for t1, t2, cost in taxi_costs:
     if find_parent(t1) == find_parent(t2): continue
+    if town_path.count(town_path[1]) == town: break
     union(t1, t2)
     tot_cost += cost
-    # if town_path
 
 print(tot_cost)
     
