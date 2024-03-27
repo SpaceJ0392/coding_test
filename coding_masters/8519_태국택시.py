@@ -14,17 +14,32 @@ input
 6 1 40
 6 4 20
 '''
-town, texi = map(int, input().split())
-texi_costs = [list(map(int, input().split())) for _ in range(texi)]
-texi_costs.sort(key=lambda x : (x[2], x[0]))
+town, taxi = map(int, input().split())
+taxi_costs = [list(map(int, input().split())) for _ in range(taxi)]
+taxi_costs.sort(key=lambda x : (x[2], x[0]))
 
-town_path = [0] * (town + 1)
+town_path = list(range(town + 1))
+
+def find_parent(child):
+    if town_path[child] == child:
+        return town_path[child]
+    else:
+        return find_parent(town_path[child])
+
+def union(child1, child2):
+    p1 = find_parent(child1)
+    p2 = find_parent(child2)
+    if p1 >= p2:
+        town_path[p1] = p2
+    else:
+        town_path[p2] = p1
+
 tot_cost = 0
-for t1, t2, cost in texi_costs:
-    if town_path[t1] == 1 and town_path[t2] == 1: continue
-    if town_path.count(1) == len(town_path) - 1: break
-    town_path[t1], town_path[t2] = 1, 1
+for t1, t2, cost in taxi_costs:
+    if find_parent(t1) == find_parent(t2): continue
+    union(t1, t2)
     tot_cost += cost
+    # if town_path
 
 print(tot_cost)
     
