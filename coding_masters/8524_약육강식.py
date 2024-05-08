@@ -1,18 +1,19 @@
+'''
+10
+1 2 3 1 2 7 1 2 10 9
+'''
+
 n = int(input())
 shark = list(map(int, input().split()))
 
-max_cnt, cnt = 1, 1
-temp = []
+max_cnt= 1
 for i in range(n - 1):
-    if shark[i] < shark[i + 1]:
-        cnt += 1
-    else:
-        temp.append(shark[i])
-        cnt = 1
-    
-    if max_cnt <= cnt : max_cnt = cnt
+    cnt, max_shark = 1, shark[i]
+    for j in range(i + 1, n):
+        if max_shark < shark[j]: 
+            cnt += 1
+            max_shark = shark[j]
+            
+    if max_cnt < cnt: max_cnt = cnt
 
-if temp[-1] < shark[-1]:
-    temp.append(shark[-1])
-
-print(max(max_cnt, len(temp)))
+print(max_cnt)

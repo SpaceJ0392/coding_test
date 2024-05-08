@@ -39,40 +39,33 @@ arrive, health = store[0][0], store[0][1]
 def check_next(health, now):
     next, energy = store[-1]
 
-    if health >= (next - now):
+    if health > (next - now):
         return True
     
     return False
 
 previous, cnt = 0, 0
-while store:
+while len(store) > 1:
     now, energy = store.pop()
     health -= now - previous
-    
+
+    if health < 0:
+        cnt = -1
+        break
+
     # 잔존 체력으로 갈 수 있는지 체크
     if not check_next(health, now):
         health += energy # 못가면, 충전
         cnt += 1
 
-    # 마지막 처리
-    if len(store) == 1 and health >= 0:
-        break
-    elif len(store) == 1 and health < 0:
-        cnt = -1
-        break
-
-    # 잔존 체력 혹은 충전 후 체력으로 어디까지 갈 수 있는지
-    flag = False
-    while check_next(health, now):
-        next, next_energy = store.pop()
-        flag =True
-        
-    if flag:
-        store.append([next, next_energy])
-    else:
-        cnt = -1
+    #충전 후 체력으로 갈 수 있는지 체크
+    if not check_next(health, now):
+        cnt = -1 # 못가면, 종료
         break
 
     previous = now
 
-print(cnt)
+if len(store) == 1 and health < arrive - previous:
+    print(-1)
+else:
+    print(cnt)
