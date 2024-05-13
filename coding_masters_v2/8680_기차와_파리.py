@@ -1,8 +1,2 @@
-dist, train, fly = map(int, input().split())
-
-train /= 3600
-fly /= 3600
-
-while dist != 0:
-    dist -= (train * 2)
+# 그냥 기차가 움직인 거리를 이용하여 충돌 하기 전까지 이동했다고 보면 된다. (단순한 수학 문제....)
     
