@@ -1,22 +1,23 @@
+
+max_p, max_count = 0, 0
 n = int(input())
 
 
-def get_triangle(perimeter):
-    cnt = 0
-    visited = set()
-    for a in range(3, perimeter // 2 + 1):
-        for b in range(a + 1, (perimeter - a) // 3 + 1):
-            c = perimeter - a - b
-            if a * a + b * b == c * c:
-                cnt += 1
+# 직각 삼각형의 개수
+def get_triangle_count(p):
+    count = 0
+    for a in range(3, p // 2 + 1):
+        b = (2 * p * a - p ** 2) / (2 * a - 2 * p)
+        c = (a ** 2 + b ** 2) ** 0.5
+        if b == int(b) and c == int(c) and a <= b:
+            count += 1
+    return count
 
-    return cnt
 
+for p in range(12, n + 1):
+    count = get_triangle_count(p)
+    if count > max_count:
+        max_count = count
+        max_p = p
 
-max_round, max_cnt = 0, 0
-for i in range(n, 11, -1):
-    cnt = get_triangle(i)
-    if cnt != 0 and max_cnt < cnt:
-        max_round, max_cnt = i, cnt
-
-print(max_round, max_cnt)
+print(f"{max_p} {max_count}")
