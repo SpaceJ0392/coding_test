@@ -1,22 +1,20 @@
 n = int(input())
 
 
-def get_triangle(perimeter):
-    cnt = 0
-    visited = set()
-    for a in range(3, perimeter // 2 + 1):
-        for b in range(a + 1, (perimeter - a) // 3 + 1):
-            c = perimeter - a - b
-            if a * a + b * b == c * c:
-                cnt += 1
+def get_triangle(tot):
+    temp = dict()
+    for a in range(3, tot, 1):
+        a, b, c = a, (a**2 - 1) // 2, (a**2 + 1) // 2
+        if temp.get(a + b + c) == None:
+            temp.setdefault(a + b + c, 1)
+        else:
+            temp[a + b + c] += 1
 
-    return cnt
+    return temp
 
 
 max_round, max_cnt = 0, 0
-for i in range(n, 11, -1):
-    cnt = get_triangle(i)
-    if cnt != 0 and max_cnt < cnt:
-        max_round, max_cnt = i, cnt
+triangle_list = get_triangle(n)
 
+print(triangle_list)
 print(max_round, max_cnt)
