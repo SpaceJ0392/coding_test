@@ -13,12 +13,12 @@ def dfs(graph, s):
         return
     
     for e in range(n + 1):
-        if graph[s][e] == 1:
+        if graph[s][e] == 1 and s != e:
             dfs(graph, e)
             if flag : return
 
 for e in range(n + 1):
-    if graph[1][e] == 1:
+    if graph[1][e] == 1 and e != 1:
         dfs(graph, e)
         if flag: break
         
