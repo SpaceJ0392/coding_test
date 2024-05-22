@@ -15,9 +15,11 @@ def dfs(graph, s):
     for e in range(n + 1):
         if graph[s][e] == 1:
             dfs(graph, e)
+            if flag : return
 
 for e in range(n + 1):
     if graph[1][e] == 1:
         dfs(graph, e)
+        if flag: break
         
 print('YES') if flag else print('NO')
