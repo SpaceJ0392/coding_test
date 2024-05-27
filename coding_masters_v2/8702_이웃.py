@@ -11,21 +11,19 @@ for _ in range(m):
     graph[v - 1][u - 1] = 1
 
 def find_max_weight(weights, start):
-    return max(weights[:-start], key= lambda x : x[1])
+    if start == 0: return max(weights, key= lambda x : x[1])
+
+    return max(weights[:-start], key= lambda x : (x[1], x[0]))
 
 cost = 0
-queue = deque([find_max_weight(weights, )])
 visited = set()
-while len(visited) != n and queue and weights:
-    node, weight = queue.popleft()
+while len(visited) != m:
+    node, weight = find_max_weight(weights, len(visited))
     visited.add(node)
 
     for new_node, check in enumerate(graph[node]):
-        if check != 0 and new_node not in visited:
+        if check != 0 and new_node not in visited and (weight - weights[new_node][1]) > k:
             cost += (weight - weights[new_node][1] - k)
             weights[new_node] = (new_node, weight - k)
-
-    next = find_max_weight(weights, len(visited))
-    queue.append(next)
 
 print(cost)
