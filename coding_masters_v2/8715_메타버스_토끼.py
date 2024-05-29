@@ -9,20 +9,20 @@ visited = {(n-1, m-1)}
 ans = -1
 
 while queue:
-    lev, y, x = queue.popleft()
+    minute, y, x = queue.popleft()
     if y == 0 and x == 0: 
-        ans = lev
+        ans = minute
         break
     
     for dy, dx in move:
         for step in range(1, 3): # 2번 수행
-            if 0 <= y + dy * step < n and 0 <= x + dx * step < m \
-                and game_map[y + dy * step][x + dx * step] != '#' and (y + dy * step, x + dx * step) not in visited:
-                    
-                    if step == 2: queue.pop()
+            ny, nx = y + dy * step, x + dx * step
+            if 0 <= ny < n and 0 <= nx < m and game_map[ny][nx] != '#' and (ny, nx) not in visited:    
+                
+                if step == 2: queue.pop()
                         
-                    visited.add((y + dy * step, x + dx * step))
-                    queue.append((lev + 1, y + dy * step, x + dx * step))
+                visited.add((ny, nx))
+                queue.append((minute + 1, ny, nx))
             else: break
 
 print(ans)
