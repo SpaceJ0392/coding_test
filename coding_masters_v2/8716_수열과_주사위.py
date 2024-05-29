@@ -1,32 +1,39 @@
-def calculate_expected_value(K, n, paper_values):
-    max_expected_value = -100
+import itertools
+import sys
 
-    for dice_sum in range(3, 19):  # Possible dice sum ranges from 3 to 18
+N = int(input())
+paper = list(map(int, input().split()))
+
+
+def calculate_dice_probabilities():
+    probabilities = {i: 0 for i in range(3, 19)}
+
+    for combination in itertools.product(range(1, 7), repeat=3):
+        probabilities[sum(combination)] += 1
+    
+    return probabilities
+
+def calculate_expected_scores(N, paper):
+    dice_probabilities = calculate_dice_probabilities()
+    expected_scores = []
+    
+    for K in range(1, N + 1):
         expected_value = 0
-        for i in range(n):
-            if K + dice_sum <= i + 1: break # If K + dice_sum exceeds N, score is -100
-                
-            expected_value += min(paper_values[i], 100)
-        max_expected_value = max(max_expected_value, expected_value)
-
-    return max_expected_value
-
-def find_best_K(n, paper_values):
-    max_expected_value = -100
-    best_K = []
-
-    for K in range(1, n + 1):
-        expected_value = calculate_expected_value(K, n, paper_values)
-
-        if expected_value >= max_expected_value:
-            max_expected_value = expected_value
-            best_K.append(K)
-
-    return best_K
+        for dice_sum in range(3, 19):
+            if K + dice_sum <= N:
+                expected_value += paper[K + dice_sum - 1] * dice_probabilities[dice_sum]
+            else:
+                expected_value += -100 * dice_probabilities[dice_sum]
+        expected_scores.append((expected_value, K))
+    
+    return expected_scores
 
 
-n = int(input())
-paper_values = list(map(int, input().split()))
+expected_scores = calculate_expected_scores(N, paper)
 
-best_score, best_K = find_best_K(n, paper_values)
-print(best_score, best_K, sep='\n')
+max_expected_value = max(expected_scores)[0]
+optimal_K_values = sorted([K for (value, K) in expected_scores if value == max_expected_value])
+
+# 216을 곱해서 출력
+print(int(max_expected_value))
+print(' '.join(map(str, optimal_K_values)))
