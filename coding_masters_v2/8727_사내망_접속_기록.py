@@ -1,24 +1,33 @@
-def is_valid_connection(N, M, K, log):
-    def get_group(computer):
-        if computer == 0:
-            return 0
-        return (computer - 1) // M + 1
-
-    prev_group = get_group(log[0])
-    
-    for i in range(1, K):
-        current_group = get_group(log[i])
-        if prev_group != current_group:
-            if log[i] != 0 and log[i-1] != 0:
-                return "NO"
-        prev_group = current_group
-    
-    return "YES"
-
-# 입력 받기
 N, M = map(int, input().strip().split())
 K = int(input().strip())
-log = list(map(int, input().strip().split()))
+log = list(map(int, input().split()))[::-1]
 
-# 결과 출력
-print(is_valid_connection(N, M, K, log))
+hub = [(M * i) + 1 for i in range(N)]
+hub_range = [(start, start + M - 1) for start in hub]
+
+flag = True
+for i in range(K - 1):
+    if log[i] == 0:
+        if log[i + 1] not in hub:
+            flag = False
+            break
+    elif log[i + 1] == 0: 
+        if log[i] not in hub:
+            flag = False
+            break
+    elif log[i] in hub:
+        end = M * ((log[i] // M) + 1)
+        start = end - M + 1
+        
+        if 0 < log[i + 1] < start or log[i + 1] > end:
+            flag = False
+            break
+    else:
+        end = M * ((log[i] // M) + 1)
+        start = end - M + 1
+        
+        if log[i + 1] < start or log[i + 1] > end:
+            flag = False
+            break
+
+print('YES') if flag else print('NO')

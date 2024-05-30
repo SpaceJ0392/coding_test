@@ -1,20 +1,39 @@
-n = int(input())
-target_list = input().replace(' ', '').strip()
+def is_good_array(N, array):
+    position_map = {}
+    
+    # 각 숫자의 위치를 저장
+    for index, value in enumerate(array):
+        if value not in position_map:
+            position_map[value] = []
+        position_map[value].append(index)
+    
+    # 각 숫자 쌍의 위치를 확인
+    for key in position_map:
+        positions = position_map[key]
+        if len(positions) != 2:
+            return "NO"
+        first, second = positions
+        # 첫 번째와 두 번째 위치 사이에 다른 숫자의 쌍이 같은 패턴인지 확인
+        for other_key in position_map:
+            if other_key == key:
+                continue
+            other_positions = position_map[other_key]
+            if (first < other_positions[0] < second and second < other_positions[1]) or \
+               (other_positions[0] < first and first < other_positions[1] < second):
+                return "NO"
+    
+    return "YES"
 
-flag = True
-visited = []
+def main():
+    import sys
+    input = sys.stdin.read
+    data = input().split()
+    
+    N = int(data[0])
+    array = list(map(int, data[1:]))
+    
+    result = is_good_array(N, array)
+    print(result)
 
-for i, target in enumerate(target_list):
-    if i not in visited:
-        p = target_list.find(target, i + 1)
-        visited += [i, p]
-        if p == -1 or 0 > (p - i) or (p - i) == 1 or p == (2 * n - 1) : continue
-        
-        j = set(target_list[i + 1 : p])
-        q = set(target_list[p + 1:])
-        
-        if len(j & q) != 0 and j & q != set():
-            flag = False
-            break
-
-print('YES') if flag else print('NO')
+if __name__ == "__main__":
+    main()

@@ -1,45 +1,34 @@
-def roll_dice(dice, direction):
-    east, south, west, north, top, bottom = dice
-    if direction == 1:  # East
-        return [bottom, south, top, north, east, west]
-    elif direction == 2:  # South
-        return [east, bottom, west, top, south, north]
-    elif direction == 3:  # West
-        return [top, south, bottom, north, west, east]
-    elif direction == 4:  # North
-        return [east, top, west, bottom, north, south]
+W, H = map(int, input().split())
+X, Y = map(int, input().split())
+plane = [[0] * W for _ in range(H)]
 
-def main():
-    W, H = map(int, input().split())
-    X, Y = map(int, input().split())
-    dice = list(map(int, input().split()))
-    N = int(input())
-    moves = list(map(int, input().split()))
+dice = list(map(int, input().split()))
+steps = int(input())
+path = list(map(int, input().split()))
 
-    # Initialize the plane
-    plane = [[0 for _ in range(W)] for _ in range(H)]
-    plane[Y][X] = dice[-1]
+def turn(dir, dice):
+    a, b, c, d, e, f = dice[0], dice[1], dice[2], dice[3], dice[4], dice[5]
+    if dir == 1: #동
+        dice[0], dice[1], dice[2], dice[3], dice[4], dice[5] = e, b, f, d, c, a
+    elif dir == 2: #남
+        dice[0], dice[1], dice[2], dice[3], dice[4], dice[5] = a, e, c, f, d, b
+    elif dir == 3: #서
+        dice[0], dice[1], dice[2], dice[3], dice[4], dice[5] = f, b, e, d, a, c
+    else: # 북
+        dice[0], dice[1], dice[2], dice[3], dice[4], dice[5] = a, f, c, e, b, d
+    
+    return dice
 
-    for move in moves:
-        new_X, new_Y = X, Y
-
-        if move == 1:  # East
-            new_X = X + 1
-        elif move == 2:  # South
-            new_Y = Y + 1
-        elif move == 3:  # West
-            new_X = X - 1
-        elif move == 4:  # North
-            new_Y = Y - 1
-
-        if 0 <= new_X < W and 0 <= new_Y < H:
-            X, Y = new_X, new_Y
-
-        dice = roll_dice(dice, move)
+plane[Y][X] = dice[-1]
+direction = {1:(0,1), 2:(1,0), 3:(0,-1), 4:(-1,0)}
+for step in path:
+    dy, dx = direction[step]
+    ny, nx = Y + dy, X + dx
+    dice = turn(step, dice)
+    if ny >= H or ny < 0 or nx >= W or nx < 0:
         plane[Y][X] = dice[-1]
+    else:
+        plane[ny][nx] = dice[-1]
+        Y, X = ny, nx
 
-    for row in plane:
-        print(" ".join(map(str, row)))
-
-if __name__ == "__main__":
-    main()
+for line in plane: print(*line)
